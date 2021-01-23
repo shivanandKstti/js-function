@@ -9,7 +9,7 @@ const RESULT_COMPUTER_WINS = 'COMPUTER_WINS';
 
 let gameIsRunning = false;
 
-const getPlayerChoice = function() {
+const getPlayerChoice = () => {
     const slection = prompt(`${ROCK}, ${PAPER}, OR ${SCISSORS}`, '').toUpperCase();
 
     if (
@@ -24,8 +24,9 @@ const getPlayerChoice = function() {
     return slection;
 }
 
-const getComputerChoise = function() {
+const getComputerChoise = () => {
     const randomValue = Math.random();
+    // console.log(randomValue);
     if (randomValue < 0.34) {
         return ROCK;
     } else if (randomValue < 0.67) {
@@ -35,21 +36,26 @@ const getComputerChoise = function() {
     }
 }
 
-const gettWinner = (cChoice, pChoice) => {
-    if (cChoice === pChoice) {
-        return RESULT_DRAW;
-    } else if (
-        cChoice === ROCK && pChoice === PAPER ||
-        cChoice === PAPER && pChoice === SCISSORS ||
-        cChoice === SCISSORS && pChoice === ROCK
-    ) {
-        return RESULT_PLAYER_WINS;
-    } else {
-        return RESULT_COMPUTER_WINS;
-    }
-}
+const gettWinner = (cChoice, pChoice) =>
+    cChoice === pChoice ?
+    RESULT_DRAW :
+    (cChoice === ROCK && pChoice === PAPER) ||
+    (cChoice === PAPER && pChoice === SCISSORS) ||
+    (cChoice === SCISSORS && pChoice === ROCK) ?
+    RESULT_PLAYER_WINS : RESULT_COMPUTER_WINS
+    // if (cChoice === pChoice) {
+    //     return RESULT_DRAW;
+    // } else if (
+    //     cChoice === ROCK && pChoice === PAPER ||
+    //     cChoice === PAPER && pChoice === SCISSORS ||
+    //     cChoice === SCISSORS && pChoice === ROCK
+    // ) {
+    //     return RESULT_PLAYER_WINS;
+    // } else {
+    //     return RESULT_COMPUTER_WINS;
+    // }
 
-startGameBtn.addEventListener('click', function() {
+startGameBtn.addEventListener('click', () => {
     if (gameIsRunning) {
         return;
     }
@@ -58,5 +64,13 @@ startGameBtn.addEventListener('click', function() {
     const playerSelection = getPlayerChoice();
     const computerChoice = getComputerChoise();
     const winner = gettWinner(computerChoice, playerSelection);
-    console.log(winner);
+    let message = `You picked ${playerSelection}, computer picked ${computerChoice} therefore you`;
+    if (winner === RESULT_DRAW) {
+        message = message + ' had a draw'
+    } else if (winner === RESULT_PLAYER_WINS) {
+        message = message + ' won.';
+    } else {
+        message = message + ' lost.';
+    }
+    alert(message);
 });
